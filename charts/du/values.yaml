@@ -31,6 +31,8 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+logHostPath: "/home/free5gc/srsran-helm/srsran-logs/du"
+
 service:
   type: ClusterIP
   # ZMQ ports

@@ -59,7 +59,7 @@ spec:
           name: {{ .Values.fullnameOverride }}-config
       - name: logs
         hostPath:
-          path: /home/free5gc/srsRAN_Project_helm/srsran-logs/du
+          path: {{ .Values.logHostPath }}
           type: DirectoryOrCreate
       {{- with .Values.nodeSelector }}
       nodeSelector:

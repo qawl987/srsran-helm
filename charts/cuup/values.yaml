@@ -31,6 +31,8 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+logHostPath: "/home/free5gc/srsran-helm/srsran-logs/cuup"
+
 service:
   type: ClusterIP
   # F1-U port (CU-UP <-> DU user plane)
