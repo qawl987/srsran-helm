@@ -1,0 +1,25 @@
+2025-11-21T05:14:46.067433 [CU-CP   ] [I] Built in Release mode using commit 8e4f0bed05 on branch main
+2025-11-21T05:14:46.672204 [CU-CP   ] [W] Could not check scaling governor. filename=/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor error=No such file or directory
+2025-11-21T05:14:46.672224 [CU-CP   ] [W] DRM KMS polling is enabled, which may hinder performance. You can disable it using the "srsran_performance" script
+2025-11-21T05:14:46.672740 [CONFIG  ] [I] Worker pool "main_pool" instantiated with #workers=2, task_queue_size=2048, backoff_period=50us and priority=96.
+2025-11-21T05:14:46.673807 [IO-EPOLL] [E] fd=0: Failed to register file descriptor. Cause: epoll_ctl failed with "Operation not permitted"
+2025-11-21T05:14:46.673819 [APP     ] [E] Couldn't register stdin handler
+2025-11-21T05:14:46.673860 [CU-CP   ] [I] Starting CU-CP...
+2025-11-21T05:14:46.674659 [CU-CP   ] [I] N2: Connection to AMF on free5gc-v1-free5gc-amf-amf-n2:38412 was established
+2025-11-21T05:14:46.674712 [NGAP    ] [I] Tx PDU: NGSetupRequest
+2025-11-21T05:14:46.675279 [NGAP    ] [I] Rx PDU: NGSetupResponse
+2025-11-21T05:14:46.675295 [CU-CP   ] [I] Connected to AMF. Supported PLMNs: 20893
+2025-11-21T05:14:46.675329 [CU-CP   ] [I] CU-CP started successfully
+2025-11-21T05:14:57.398475 [CU-CP   ] [I] Added TNL connection to CU-UP 0
+2025-11-21T05:14:57.398899 [CU-CP-E1] [I] Rx PDU tid=0: GNB-CU-UP-E1SetupRequest
+2025-11-21T05:14:57.398905 [CU-CP-E1] [I] Tx PDU tid=0: GNB-CU-UP-E1SetupResponse
+2025-11-21T05:14:58.183611 [CU-CP   ] [I] Added TNL connection to DU 0
+2025-11-21T05:14:58.198115 [CU-CP-F1] [I] Rx PDU du=0 tid=0: F1SetupRequest
+2025-11-21T05:14:58.198232 [CU-CP-F1] [I] Tx PDU du=0 tid=0: F1SetupResponse
+2025-11-21T05:15:01.445188 [CU-CP   ] [I] Stopping CU-CP...
+2025-11-21T05:15:01.445506 [CU-CP   ] [I] Removed DU 0
+2025-11-21T05:15:01.445891 [CU-CP   ] [I] Removed CU-UP 0
+2025-11-21T05:15:01.446480 [CU-CP   ] [I] CU-CP stopped successfully.
+2025-11-21T05:15:01.447146 [CU-CP   ] [I] Closing PCAP files...
+2025-11-21T05:15:01.447985 [CU-CP   ] [I] PCAP files successfully closed.
+(END)

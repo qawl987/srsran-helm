@@ -1,0 +1,15 @@
+2025-11-21T05:14:56.283197 [CU-UP   ] [I] Built in Release mode using commit 8e4f0bed05 on branch main
+2025-11-21T05:14:57.316635 [CU-UP   ] [W] Could not check scaling governor. filename=/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor error=No such file or directory
+2025-11-21T05:14:57.316695 [CU-UP   ] [W] DRM KMS polling is enabled, which may hinder performance. You can disable it using the "srsran_performance" script
+2025-11-21T05:14:57.317946 [CONFIG  ] [I] Worker pool "main_pool" instantiated with #workers=2, task_queue_size=2048, backoff_period=50us and priority=96.
+2025-11-21T05:14:57.378936 [GTPU    ] [I] GTP-U demux. queue_size=8192 batch_size=256 warn_on_drop=true test_mode=false
+2025-11-21T05:14:57.381705 [GTPU    ] [I] GTP-U demux. queue_size=2046 batch_size=256 warn_on_drop=false test_mode=false
+2025-11-21T05:14:57.382642 [GTPU    ] [I] Tunnel added. teid=0x000000
+2025-11-21T05:14:57.397345 [CU-UP   ] [I] CU-UP starting...
+2025-11-21T05:14:57.398523 [CU-UP-E1] [I] E1: TNL connection to CU-CP on srsran-cucp:38462 accepted
+2025-11-21T05:14:57.398549 [CU-UP-E1] [I] Sending E1SetupRequest
+2025-11-21T05:14:57.398553 [CU-UP-E1] [I] Tx PDU tid=0: GNB-CU-UP-E1SetupRequest
+2025-11-21T05:14:57.399037 [CU-UP-E1] [I] Rx PDU tid=0: GNB-CU-UP-E1SetupResponse
+2025-11-21T05:14:57.399040 [CU-UP-E1] [I] "E1AP CU-UP Setup Procedure" finalized
+2025-11-21T05:14:57.399259 [CU-UP   ] [I] CU-UP started successfully
+2025-11-21T05:15:06.513500 [APP     ] [E] Emergency flush of the logger
