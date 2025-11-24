@@ -19,6 +19,12 @@ spec:
             "interface": "f1u",
             "ips": ["{{ .Values.multus.n3interface.f1u.ipAddress }}/29"],
             "gateway": ["{{ .Values.multus.n3interface.f1u.gateway }}"]
+          },
+          {
+            "name": "{{ .Values.multus.zmqInterface.nadName }}-{{ .Values.fullnameOverride }}",
+            "interface": "zmq",
+            "ips": ["{{ .Values.multus.zmqInterface.ipAddress }}/29"],
+            "gateway": ["{{ .Values.multus.zmqInterface.gateway }}"]
           }
         ]'
       labels:

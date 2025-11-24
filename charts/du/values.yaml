@@ -47,6 +47,11 @@ multus:
     f1u:
       ipAddress: "10.100.50.236"
       gateway: "10.100.50.238"
+  zmqInterface:
+    create: true  # Create dedicated ZMQ NAD
+    nadName: "zmqnetwork"
+    ipAddress: "10.100.50.217"  # Fixed IP for DU ZMQ
+    gateway: "10.100.50.222"
 
 config:
   du.yml: |-
@@ -61,7 +66,7 @@ config:
 
     ru_sdr:
       device_driver: zmq                     # ZMQ radio driver for testing
-      device_args: tx_port=tcp://0.0.0.0:2000,rx_port=tcp://0.0.0.0:2001,base_srate=23.04e6
+      device_args: tx_port=tcp://10.100.50.217:2000,rx_port=tcp://10.100.50.218:2001,base_srate=23.04e6
       srate: 23.04
       tx_gain: 75
       rx_gain: 75
