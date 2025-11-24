@@ -43,6 +43,7 @@ service:
 config:
   cu_cp.yml: |-
     cu_cp:
+      request_pdu_session_timeout: 20
       amf:
         addr: free5gc-v1-free5gc-amf-amf-n2  # AMF N2 service (now listening on 0.0.0.0)
         port: 38412
