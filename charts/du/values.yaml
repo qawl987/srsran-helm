@@ -21,11 +21,11 @@ securityContext:
 
 resources:
   limits:
-    cpu: 2
-    memory: 4Gi
+    cpu: 4
+    memory: 8Gi
   requests:
-    cpu: 1
-    memory: 2Gi
+    cpu: 3
+    memory: 4Gi
 
 nodeSelector: {}
 tolerations: []
@@ -95,7 +95,7 @@ config:
 
     log:
       filename: /tmp/logs/du.log
-      all_level: info
+      all_level: warning
 
     pcap:
       mac_enable: true

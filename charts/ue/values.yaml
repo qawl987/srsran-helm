@@ -24,7 +24,7 @@ resources:
     cpu: 2
     memory: 4Gi
   requests:
-    cpu: 1
+    cpu: 2
     memory: 2Gi
 
 nodeSelector: {}
@@ -96,14 +96,14 @@ config:
     nssai-sd = 66051
 
     [gw]
-    ip_devname = tun_srsue
+    ip_devname = uesimtun0
     ip_netmask = 255.255.255.0
 
     [gui]
     enable = false
 
     [log]
-    all_level = info
+    all_level = warning
     filename = /tmp/logs/ue.log
     phy_lib_level = none
     all_hex_limit = 32

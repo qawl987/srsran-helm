@@ -21,11 +21,11 @@ securityContext:
 
 resources:
   limits:
-    cpu: 4
-    memory: 8Gi
-  requests:
     cpu: 2
     memory: 4Gi
+  requests:
+    cpu: 2
+    memory: 2Gi
 
 nodeSelector: {}
 tolerations: []
@@ -62,7 +62,7 @@ config:
 
     log:
       filename: /tmp/logs/cu_cp.log
-      all_level: info
+      all_level: warning
 
     pcap:
       ngap_enable: true
