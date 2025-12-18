@@ -16,15 +16,15 @@ podSecurityContext: {}
 
 securityContext:
   capabilities:
-    add: ["SYS_NICE", "NET_ADMIN"]
-  privileged: false
+    add: ["SYS_NICE", "NET_ADMIN", "IPC_LOCK", "SYS_RESOURCE"]
+  privileged: true
 
 resources:
   limits:
     cpu: 2
     memory: 4Gi
   requests:
-    cpu: 2
+    cpu: 2000m
     memory: 2Gi
 
 nodeSelector: {}

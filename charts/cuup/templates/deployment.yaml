@@ -55,6 +55,9 @@ spec:
           mountPath: /etc/config
         - name: logs
           mountPath: /tmp/logs
+        - name: cpu-info
+          mountPath: /sys/devices/system/cpu
+          readOnly: true
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
       volumes:
@@ -65,6 +68,10 @@ spec:
         hostPath:
           path: {{ .Values.logHostPath }}
           type: DirectoryOrCreate
+      - name: cpu-info
+        hostPath:
+          path: /sys/devices/system/cpu
+          type: Directory
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
