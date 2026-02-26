@@ -8,6 +8,16 @@ build-ue-image:
 import-ue:
 	docker save srsran-ue:latest | microk8s ctr image import -
 
+# Push locally-built images to Docker Hub (docker login required first).
+DOCKERHUB_USER ?= qawl987
+push:
+	docker tag srsran-split:latest $(DOCKERHUB_USER)/srsran-split:latest
+	docker push $(DOCKERHUB_USER)/srsran-split:latest
+	docker tag srsran-ue:latest $(DOCKERHUB_USER)/srsran-ue:latest
+	docker push $(DOCKERHUB_USER)/srsran-ue:latest
+
+build-push: build-image build-ue-image push
+
 # Run command
 .PHONY: free5gc cp up du
 free5gc:
