@@ -17,8 +17,7 @@ spec:
           {
             "name": "{{ .Values.multus.zmqInterface.nadName }}-{{ .Values.fullnameOverride }}",
             "interface": "zmq",
-            "ips": ["{{ .Values.multus.zmqInterface.ipAddress }}/29"],
-            "gateway": ["{{ .Values.multus.zmqInterface.gateway }}"]
+            "ips": ["{{ .Values.multus.zmqInterface.ipAddress }}/24"]
           }
         ]'
       labels:

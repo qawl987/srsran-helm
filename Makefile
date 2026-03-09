@@ -35,7 +35,15 @@ gnb:
 	sleep 3
 	make du
 ue:
-	helm install srsran-ue -n free5gc /home/free5gc/srsran-helm/charts/ue
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-ue 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-ue
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-ue \
+		pod-security.kubernetes.io/enforce=privileged \
+		pod-security.kubernetes.io/enforce-version=latest \
+		pod-security.kubernetes.io/audit=privileged \
+		pod-security.kubernetes.io/audit-version=latest \
+		pod-security.kubernetes.io/warn=privileged \
+		pod-security.kubernetes.io/warn-version=latest --overwrite
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-ue -n srsran-ue /home/free5gc/srsran-helm/charts/ue
 gnb-ue:
 	make cp
 	sleep 3
@@ -53,7 +61,7 @@ uninstall-up:
 uninstall-du:
 	helm uninstall srsran-du -n free5gc
 uninstall-ue:
-	helm uninstall srsran-ue -n free5gc
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm uninstall srsran-ue -n srsran-ue
 uninstall-gnb:
 	make uninstall-du
 	sleep 3

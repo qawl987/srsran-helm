@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: srsran-ue
+  repository: docker.io/qawl987/srsran-ue
   pullPolicy: IfNotPresent
   tag: latest
 
@@ -27,25 +27,29 @@ resources:
     cpu: 2
     memory: 2Gi
 
-nodeSelector: {}
+# Must run on the same worker node as the Nephio DU to share the eth1.2 macvlan L2 bridge
+nodeSelector:
+  kubernetes.io/hostname: regional-md-0-d55dw-lx5gd-sp69g
 tolerations: []
 affinity: {}
 
 logHostPath: "/home/free5gc/srsran-helm/srsran-logs/ue"
 
-# DU service configuration
+# DU ZMQ address (Nephio DU f1u interface: 172.6.0.0/24 on eth1.2 macvlan)
 duService:
   name: "srsran-du"
-  zmqTxPort: 2000
-  zmqRxPort: 2001
+  zmqIP: "172.6.0.0"
+  zmqTxPort: 2000  # DU sends on 2000 → UE rx
+  zmqRxPort: 2001  # DU receives on 2001 → UE tx
 
 # Multus network configuration for ZMQ
+# Must be macvlan on eth1.2 (same L2 as Nephio DU f1u) with IP in 172.6.0.0/24
 multus:
   zmqInterface:
     create: true  # Create dedicated ZMQ NAD
     nadName: "zmqnetwork"
-    ipAddress: "10.100.50.218"  # Fixed IP for UE ZMQ
-    gateway: "10.100.50.222"
+    ipAddress: "172.6.0.1"  # UE ZMQ IP on 172.6.0.0/24 subnet
+    gateway: ""
 
 config:
   ue_conf: |-
@@ -62,7 +66,7 @@ config:
     nof_antennas = 1
 
     device_name = zmq
-    device_args = tx_port=tcp://10.100.50.218:2001,rx_port=tcp://10.100.50.217:2000,base_srate=23.04e6
+    device_args = tx_port=tcp://172.6.0.1:2001,rx_port=tcp://172.6.0.0:2000,base_srate=23.04e6
 
     [rat.eutra]
     dl_earfcn = 2850
