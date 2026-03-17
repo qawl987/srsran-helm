@@ -52,7 +52,7 @@ ue:
 		pod-security.kubernetes.io/warn-version=latest --overwrite
 	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-ue -n srsran-ue /home/free5gc/srsran-helm/charts/ue
 gnu:
-	grcc multi_ue_scenario.grc -d ./charts/gnu-breaker/files/
+	grcc multi_ue_scenario.grc -o ./charts/gnu-breaker/files/
 	@test -f ./charts/gnu-breaker/files/multi_ue_scenario.py
 	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-gnu 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-gnu
 	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-gnu \
@@ -89,6 +89,8 @@ uninstall-gnb:
 	make uninstall-cp
 uninstall-all:
 	helm uninstall srsran-ue -n free5gc && sleep 2 && helm uninstall srsran-du -n free5gc && sleep 2 && helm uninstall srsran-cuup -n free5gc && sleep 2 && helm uninstall srsran-cucp -n free5gc
+uninstall-gnu:
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm uninstall srsran-gnu -n srsran-gnu
 check-log:
 	cd /home/free5gc/srsRAN_Project_helm && microk8s helm install srsran-cucp ./charts/cucp -n free5gc && sleep 2 && microk8s helm install srsran-cuup ./charts/cuup -n free5gc && sleep 2 && microk8s helm install srsran-du ./charts/du -n free5gc && sleep 10 && microk8s helm uninstall srsran-cucp srsran-cuup srsran-du -n free5gc
 tmp:
