@@ -8,6 +8,9 @@ build-ue-image:
 import-ue:
 	docker save srsran-ue:latest | microk8s ctr image import -
 
+build-gnu-breaker-image:
+	cd docker && sudo docker build -f Dockerfile.gnu-breaker -t gnu-breaker:latest .
+
 # Push locally-built images to Docker Hub (docker login required first).
 DOCKERHUB_USER ?= qawl987
 push:
@@ -15,11 +18,15 @@ push:
 	docker push $(DOCKERHUB_USER)/srsran-split:latest
 	docker tag srsran-ue:latest $(DOCKERHUB_USER)/srsran-ue:latest
 	docker push $(DOCKERHUB_USER)/srsran-ue:latest
+push-gnu:
+	docker tag gnu-breaker:latest $(DOCKERHUB_USER)/gnu-breaker:latest
+	docker push $(DOCKERHUB_USER)/gnu-breaker:latest
 
 build-push: build-image build-ue-image push
+build-push-gnu: build-gnu-breaker-image push-gnu
 
 # Run command
-.PHONY: free5gc cp up du
+.PHONY: free5gc cp up du ue gnu
 free5gc:
 	helm install free5gc-v1 -n free5gc /home/free5gc/free5gc-helm/charts/free5gc
 cp:
@@ -44,6 +51,18 @@ ue:
 		pod-security.kubernetes.io/warn=privileged \
 		pod-security.kubernetes.io/warn-version=latest --overwrite
 	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-ue -n srsran-ue /home/free5gc/srsran-helm/charts/ue
+gnu:
+	grcc multi_ue_scenario.grc -d ./charts/gnu-breaker/files/
+	@test -f ./charts/gnu-breaker/files/multi_ue_scenario.py
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-gnu 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-gnu
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-gnu \
+		pod-security.kubernetes.io/enforce=privileged \
+		pod-security.kubernetes.io/enforce-version=latest \
+		pod-security.kubernetes.io/audit=privileged \
+		pod-security.kubernetes.io/audit-version=latest \
+		pod-security.kubernetes.io/warn=privileged \
+		pod-security.kubernetes.io/warn-version=latest --overwrite
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-gnu -n srsran-gnu /home/free5gc/srsran-helm/charts/gnu-breaker
 gnb-ue:
 	make cp
 	sleep 3
