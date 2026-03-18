@@ -26,7 +26,7 @@ build-push: build-image build-ue-image push
 build-push-gnu: build-gnu-breaker-image push-gnu
 
 # Run command
-.PHONY: free5gc cp up du ue gnu
+.PHONY: free5gc cp up du ue ue1 ue2 gnu
 free5gc:
 	helm install free5gc-v1 -n free5gc /home/free5gc/free5gc-helm/charts/free5gc
 cp:
@@ -51,6 +51,26 @@ ue:
 		pod-security.kubernetes.io/warn=privileged \
 		pod-security.kubernetes.io/warn-version=latest --overwrite
 	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-ue -n srsran-ue /home/free5gc/srsran-helm/charts/ue
+ue1:
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-ue 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-ue
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-ue \
+		pod-security.kubernetes.io/enforce=privileged \
+		pod-security.kubernetes.io/enforce-version=latest \
+		pod-security.kubernetes.io/audit=privileged \
+		pod-security.kubernetes.io/audit-version=latest \
+		pod-security.kubernetes.io/warn=privileged \
+		pod-security.kubernetes.io/warn-version=latest --overwrite
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install ue1 -n srsran-ue /home/free5gc/srsran-helm/charts/ue -f /home/free5gc/srsran-helm/charts/ue/values_ue1.yaml
+ue2:
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-ue 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-ue
+	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-ue \
+		pod-security.kubernetes.io/enforce=privileged \
+		pod-security.kubernetes.io/enforce-version=latest \
+		pod-security.kubernetes.io/audit=privileged \
+		pod-security.kubernetes.io/audit-version=latest \
+		pod-security.kubernetes.io/warn=privileged \
+		pod-security.kubernetes.io/warn-version=latest --overwrite
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install ue2 -n srsran-ue /home/free5gc/srsran-helm/charts/ue -f /home/free5gc/srsran-helm/charts/ue/values_ue2.yaml
 gnu:
 	grcc multi_ue_scenario.grc -o ./charts/gnu-breaker/files/
 	@test -f ./charts/gnu-breaker/files/multi_ue_scenario.py
@@ -81,6 +101,10 @@ uninstall-du:
 	helm uninstall srsran-du -n free5gc
 uninstall-ue:
 	KUBECONFIG=/home/free5gc/regional.kubeconfig helm uninstall srsran-ue -n srsran-ue
+uninstall-ue1:
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm uninstall ue1 -n srsran-ue
+uninstall-ue2:
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm uninstall ue2 -n srsran-ue
 uninstall-gnb:
 	make uninstall-du
 	sleep 3

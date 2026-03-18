@@ -32,5 +32,5 @@ multus:
   nadName: "gnu-breaker-macvlan"
   interface: "zmq"
   master: "eth1.3"
-  ipAddress: "172.6.0.3"
+  ipAddress: "172.6.0.1"  # Must match the IP used in zeromq_rep_sink bind addresses
   subnetMask: 24
