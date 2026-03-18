@@ -15,9 +15,9 @@ spec:
       annotations:
         k8s.v1.cni.cncf.io/networks: '[
           {
-            "name": "{{ .Values.multus.zmqInterface.nadName }}-{{ .Values.fullnameOverride }}",
+            "name": "{{ .Values.multus.nadName }}-{{ .Values.fullnameOverride }}",
             "interface": "zmq",
-            "ips": ["{{ .Values.multus.zmqInterface.ipAddress }}/24"]
+            "ips": ["{{ .Values.multus.ipAddress }}/{{ .Values.multus.subnetMask }}"]
           }
         ]'
       labels:

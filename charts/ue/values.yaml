@@ -29,7 +29,7 @@ resources:
 
 # Must run on the same worker node as the Nephio DU to share the eth1.2 macvlan L2 bridge
 nodeSelector:
-  kubernetes.io/hostname: regional-md-0-d55dw-lx5gd-sp69g
+  kubernetes.io/hostname: regional-md-0-7hcxb-z4qv6-q6r67
 tolerations: []
 affinity: {}
 
@@ -43,13 +43,12 @@ duService:
   zmqRxPort: 2001  # DU receives on 2001 → UE tx
 
 # Multus network configuration for ZMQ
-# Must be macvlan on eth1.2 (same L2 as Nephio DU f1u) with IP in 172.6.0.0/24
+# Must be macvlan on eth1.x (same L2 as Nephio DU f1u) with IP in 172.6.0.0/24
 multus:
-  zmqInterface:
-    create: true  # Create dedicated ZMQ NAD
-    nadName: "zmqnetwork"
-    ipAddress: "172.6.0.1"  # UE ZMQ IP on 172.6.0.0/24 subnet
-    gateway: ""
+  nadName: "zmqnetwork"
+  masterIf: "eth1.3"
+  ipAddress: "172.6.0.1"  # UE ZMQ IP on 172.6.0.0/24 subnet
+  subnetMask: 24
 
 config:
   ue_conf: |-

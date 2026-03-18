@@ -1,7 +1,7 @@
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: {{ .Values.multus.zmqInterface.nadName }}-{{ .Values.fullnameOverride }}
+  name: {{ .Values.multus.nadName }}-{{ .Values.fullnameOverride }}
   namespace: {{ .Release.Namespace }}
 spec:
   config: '{
@@ -10,11 +10,11 @@ spec:
         {
           "type": "macvlan",
           "capabilities": { "ips": true },
-          "master": "eth1.2",
+          "master": "{{ .Values.multus.masterIf }}",
           "mode": "bridge",
           "ipam": {
             "type": "static",
-            "addresses": [{ "address": "172.6.0.1/24" }]
+            "addresses": [{ "address": "{{ .Values.multus.ipAddress }}/{{ .Values.multus.subnetMask }}" }]
           }
         },
         {
