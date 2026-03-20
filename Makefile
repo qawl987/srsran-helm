@@ -115,6 +115,22 @@ uninstall-all:
 	helm uninstall srsran-ue -n free5gc && sleep 2 && helm uninstall srsran-du -n free5gc && sleep 2 && helm uninstall srsran-cuup -n free5gc && sleep 2 && helm uninstall srsran-cucp -n free5gc
 uninstall-gnu:
 	KUBECONFIG=/home/free5gc/regional.kubeconfig helm uninstall srsran-gnu -n srsran-gnu
+
+# iperf3 client tests from UE pods
+# Requires iperf3 installed in Kind worker: docker exec $KIND_WORKER apt-get install -y iperf3
+KIND_WORKER ?= regional-md-0-7hcxb-z4qv6-q6r67
+
+.PHONY: iperf-ue1 iperf-ue2
+iperf-ue1: ## Run iperf3 client from UE1 network namespace to 10.0.1.254
+	@UE1_CID=$$(sudo docker exec $(KIND_WORKER) crictl ps | grep 'srsran-ue1-' | awk '{print $$1}') && \
+	UE1_PID=$$(sudo docker exec $(KIND_WORKER) crictl inspect $$UE1_CID | grep '"pid":' | head -1 | tr -dc '0-9') && \
+	sudo docker exec $(KIND_WORKER) nsenter -t $$UE1_PID -n iperf3 --bind-dev uesimtun0 -c 10.0.1.254 -i 1 -t 60 -u -b 1.5M --get-server-output
+
+iperf-ue2: ## Run iperf3 client from UE2 network namespace to 10.0.1.253
+	@UE2_CID=$$(sudo docker exec $(KIND_WORKER) crictl ps | grep 'srsran-ue2-' | awk '{print $$1}') && \
+	UE2_PID=$$(sudo docker exec $(KIND_WORKER) crictl inspect $$UE2_CID | grep '"pid":' | head -1 | tr -dc '0-9') && \
+	sudo docker exec $(KIND_WORKER) nsenter -t $$UE2_PID -n iperf3 --bind-dev uesimtun0 -c 10.0.1.253 -i 1 -t 30 -u -b 1.5M --get-server-output
+
 check-log:
 	cd /home/free5gc/srsRAN_Project_helm && microk8s helm install srsran-cucp ./charts/cucp -n free5gc && sleep 2 && microk8s helm install srsran-cuup ./charts/cuup -n free5gc && sleep 2 && microk8s helm install srsran-du ./charts/du -n free5gc && sleep 10 && microk8s helm uninstall srsran-cucp srsran-cuup srsran-du -n free5gc
 tmp:

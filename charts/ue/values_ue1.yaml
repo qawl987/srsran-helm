@@ -5,7 +5,7 @@ image:
   pullPolicy: IfNotPresent
   tag: latest
 
-nameOverride: "ue"
+nameOverride: "ue1"
 fullnameOverride: "srsran-ue1"
 
 serviceAccount:
