@@ -32,9 +32,9 @@ class multi_ue_scenario(gr.top_block):
         ##################################################
         self.zmq_timeout = zmq_timeout = 100
         self.zmq_hwm = zmq_hwm = -1
-        self.ue2_path_loss_db = ue2_path_loss_db = 10
+        self.ue2_path_loss_db = ue2_path_loss_db = 0
         self.ue1_path_loss_db = ue1_path_loss_db = 0
-        self.slow_down_ratio = slow_down_ratio = 4
+        self.slow_down_ratio = slow_down_ratio = 1
         self.samp_rate = samp_rate = 11520000
 
         ##################################################
