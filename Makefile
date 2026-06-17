@@ -1,5 +1,7 @@
 build-image:
 	cd docker && docker build -f Dockerfile.split-k8s -t srsran-split:latest ..
+
+KIND_WORKER ?= regional-md-0-cjcq5-vnrhb-9prl5
 import:
 	docker save srsran-split:latest | microk8s ctr image import -
 
@@ -50,7 +52,8 @@ ue:
 		pod-security.kubernetes.io/audit-version=latest \
 		pod-security.kubernetes.io/warn=privileged \
 		pod-security.kubernetes.io/warn-version=latest --overwrite
-	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-ue -n srsran-ue /home/free5gc/srsran-helm/charts/ue
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install srsran-ue -n srsran-ue /home/free5gc/srsran-helm/charts/ue \
+		--set nodeSelector."kubernetes\\.io/hostname"=$(KIND_WORKER)
 ue1:
 	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-ue 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-ue
 	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-ue \
@@ -118,8 +121,6 @@ uninstall-gnu:
 
 # iperf3 client tests from UE pods
 # Requires iperf3 installed in Kind worker: docker exec $KIND_WORKER apt-get install -y iperf3
-KIND_WORKER ?= regional-md-0-7hcxb-z4qv6-q6r67
-
 .PHONY: iperf-ue1 iperf-ue2
 iperf-ue1: ## Run iperf3 client from UE1 network namespace to 10.0.1.254
 	@UE1_CID=$$(sudo docker exec $(KIND_WORKER) crictl ps | grep 'srsran-ue1-' | awk '{print $$1}') && \
