@@ -63,7 +63,8 @@ ue1:
 		pod-security.kubernetes.io/audit-version=latest \
 		pod-security.kubernetes.io/warn=privileged \
 		pod-security.kubernetes.io/warn-version=latest --overwrite
-	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install ue1 -n srsran-ue /home/free5gc/srsran-helm/charts/ue -f /home/free5gc/srsran-helm/charts/ue/values_ue1.yaml
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install ue1 -n srsran-ue /home/free5gc/srsran-helm/charts/ue -f /home/free5gc/srsran-helm/charts/ue/values_ue1.yaml \
+		--set nodeSelector."kubernetes\\.io/hostname"=$(KIND_WORKER)
 ue2:
 	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl get namespace srsran-ue 2>/dev/null || KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl create namespace srsran-ue
 	KUBECONFIG=/home/free5gc/regional.kubeconfig kubectl label namespace srsran-ue \
@@ -73,7 +74,8 @@ ue2:
 		pod-security.kubernetes.io/audit-version=latest \
 		pod-security.kubernetes.io/warn=privileged \
 		pod-security.kubernetes.io/warn-version=latest --overwrite
-	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install ue2 -n srsran-ue /home/free5gc/srsran-helm/charts/ue -f /home/free5gc/srsran-helm/charts/ue/values_ue2.yaml
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install ue2 -n srsran-ue /home/free5gc/srsran-helm/charts/ue -f /home/free5gc/srsran-helm/charts/ue/values_ue2.yaml \
+		--set nodeSelector."kubernetes\\.io/hostname"=$(KIND_WORKER)
 gnu:
 	grcc multi_ue_scenario.grc -o ./charts/gnu-breaker/files/
 	@test -f ./charts/gnu-breaker/files/multi_ue_scenario.py
@@ -85,7 +87,7 @@ gnu:
 		pod-security.kubernetes.io/audit-version=latest \
 		pod-security.kubernetes.io/warn=privileged \
 		pod-security.kubernetes.io/warn-version=latest --overwrite
-	KUBECONFIG=/home/free5gc/regional.kubeconfig helm install srsran-gnu -n srsran-gnu /home/free5gc/srsran-helm/charts/gnu-breaker
+	KUBECONFIG=/home/free5gc/regional.kubeconfig helm upgrade --install srsran-gnu -n srsran-gnu /home/free5gc/srsran-helm/charts/gnu-breaker
 gnb-ue:
 	make cp
 	sleep 3
